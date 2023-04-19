@@ -228,6 +228,7 @@ return (
                 }}
             >
                     <Button
+                        disabled={isLoading}
                         sx={{
                             width: "50px",
                             cursor: "pointer",
@@ -237,6 +238,7 @@ return (
                         onClick={() =>{ like(data.message, descripcion); refetch(getPerro) }}
                     >Aprobar</Button>
                     <Button
+                     disabled={isLoading}
                         sx={{ 
                             marginLeft: "50px",
                             width: "50px"
