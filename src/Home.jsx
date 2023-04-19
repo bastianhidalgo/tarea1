@@ -46,7 +46,7 @@ const dislike = (img, descripcion) => {
         id: contador,
         nombre: generateRandomString(5),
         img: img,
-        description: descripcion,
+        descripcion: descripcion,
         state: false
     }
     let perritosrechazados = rechazados.concat(perro);

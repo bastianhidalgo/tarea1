@@ -1,2 +1,5 @@
 Cristian Bustos
-Bastian Hidalgo
+Bastian Hidalgo.
+
+Ejecutar el proyecto es npm run start
+ya que esta realizado con create-react-app y no con vite.
