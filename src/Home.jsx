@@ -4,6 +4,11 @@ import {getPerro} from "../src/Queries/query";
 import { useQuery } from "react-query";
 import { Image } from "mui-image";
 
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+
+
 import {
   CircularProgress,
   Button,
@@ -12,8 +17,10 @@ import {
   CardContent,
   Grid,
   Typography,
-  Alert
+  Alert,
+  Tooltip
 } from "@mui/material";
+import SimpleAccordion from "./Components/Header/Accordion/Accordion";
 
 function Home() {
 
@@ -105,80 +112,6 @@ return (
     }}
 >
 
-       <Grid
-        item
-        md={3}
-        sm={5}
-        sx={{
-            height: "auto",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            overflowY: "scroll",
-            backgroundColor: "white",
-            flexWrap: "nowrap"
-        }}
-    >
-        <Typography variant="h5">Aprobados</Typography>
-        {
-            aprobados.length > 0 ? aprobados.map((perro,idx) => {
-                return (
-                    <Grid item key={idx}
-                        sx={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            padding: "10px",
-                        }}
-                    >
-        <Card outlined="true" sx={{
-                width:"70%",
-                padding:"20px",
-                display: "flex",
-                flexDirection:"column",
-                justifyContent:"center",
-                alignItems:"center",
-                marginTop:"10px",
-                marginBottom:"10px",
-                overflowY:"scroll"
-               
-            }}>
-            <Typography variant="h4" >{perro.nombre}</Typography>
-            <Image 
-                src={perro.img}
-                width="250px"
-                height="250px"
-                style={{
-                    borderRadius:"20px"
-                }}
-             />
-            <CardContent
-                sx={{
-                    padding:"10px"
-                }}
-            >
-                <div>
-                    {descripcion}
-                </div>
-                <Button
-                                sx={{
-                                    width:"50px",
-                                    cursor: "pointer",
-                                    marginLeft:"70px",
-                                    marginTop: "20px"
-                                }}
-
-                                color="primary"
-                                onClick={() => { arrepentido(perro); refetch(getPerro) }}
-                            >Arrepentirse</Button>
-            </CardContent>
-        </Card>
-                    </Grid>
-                )
-            }) : <Alert severity="error">No hay perritos aprobados</Alert>
-        }
-    </Grid>
     <Grid
      item
      md={3}
@@ -227,7 +160,8 @@ return (
                     marginTop: "5px"
                 }}
             >
-                    <Button
+                <Tooltip title="Me gusta">
+                    <ThumbUpIcon
                         disabled={isLoading}
                         sx={{
                             width: "50px",
@@ -236,28 +170,112 @@ return (
                         }}
                         color="primary"
                         onClick={() =>{ like(data.message, descripcion); refetch(getPerro) }}
-                    >Aprobar</Button>
-                    <Button
+                    >Aprobar</ThumbUpIcon>
+                    </Tooltip>
+                    <Tooltip title="No me gusta">
+                    <ThumbDownIcon
                      disabled={isLoading}
                         sx={{ 
                             marginLeft: "50px",
-                            width: "50px"
+                            width: "50px",
+                            cursor: "pointer",
+
                         }}
                         color="error"
                         onClick={() => { dislike(data.message, descripcion); refetch(getPerro) }}
-                    >Rechazar</Button>
+                    >Rechazar</ThumbDownIcon>
+                    </Tooltip>
             </Box>
 
         </Card>
 
 
     </Grid>
-
     <Grid
         item
         md={3}
         sm={5}
         sx={{
+            maxHeight: "500px",
+            height: "auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            overflowY: "scroll",
+            backgroundColor: "white",
+            flexWrap: "nowrap"
+        }}
+    >
+        <Typography variant="h5">Aprobados</Typography>
+        {
+            aprobados.length > 0 ? aprobados.map((perro,idx) => {
+                return (
+                    <Grid item key={idx}
+                        sx={{
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            padding: "10px",
+                            height: "450px",
+                        }}
+                    >
+        <Card outlined="true" sx={{
+                width:"70%",
+                padding:"20px",
+                display: "flex",
+                flexDirection:"column",
+                justifyContent:"center",
+                alignItems:"center",
+                marginTop:"10px",
+                marginBottom:"10px",
+                overflowY:"scroll"
+               
+            }}>
+            <Typography variant="h4" >{perro.nombre}</Typography>
+            <Image 
+                src={perro.img}
+                width="250px"
+                height="250px"
+                style={{
+                    borderRadius:"20px"
+                }}
+             />
+            <CardContent
+                sx={{
+                    padding:"10px"
+                }}
+            >
+                <div>
+
+                <SimpleAccordion description={descripcion}/>
+                </div><Tooltip title="Arrepentirse">
+                                        <ChangeCircleIcon
+                                            sx={{
+                                                cursor: "pointer",
+                                                width:"30px",
+                                                height:"30px",
+                                                marginLeft:"120px"
+
+                                            }}
+
+                                            color="primary"
+                                            onClick={() => { arrepentido(perro); refetch(getPerro) }}
+                                        />
+                                        </Tooltip>
+            </CardContent>
+        </Card>
+                    </Grid>
+                )
+            }) : <Alert severity="error">No hay perritos aprobados</Alert>
+        }
+    </Grid>
+    <Grid
+        item
+        md={3}
+        sm={5}
+        sx={{
+            maxHeight: "500px",
             height: "auto",
             display: "flex",
             flexDirection: "column",
@@ -310,19 +328,22 @@ return (
                 }}
             >
                 <div>
-                    {descripcion}
+                <SimpleAccordion description={descripcion}/>
                 </div>
-                <Button
-                                sx={{
-                                    width:"50px",
-                                    cursor: "pointer",
-                                    marginLeft:"70px",
-                                    marginTop: "20px"
-                                }}
+                <Tooltip title="Arrepentirse">
+                                        <ChangeCircleIcon
+                                            sx={{
+                                                cursor: "pointer",
+                                                width:"30px",
+                                                height:"30px",
+                                                marginLeft:"120px"
+                                                
+                                            }}
 
-                                color="primary"
-                                onClick={() => { arrepentido(perro); refetch(getPerro) }}
-                            >Arrepentirse</Button>
+                                            color="primary"
+                                            onClick={() => { arrepentido(perro); refetch(getPerro) }}
+                                        />
+                                        </Tooltip>
             </CardContent>
         </Card>
                     </Grid>
